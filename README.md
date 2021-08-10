@@ -1,6 +1,7 @@
 # Yaml configuration API
 
-This API based on [this](https://mvnrepository.com/artifact/org.spongepowered/configurate-yaml/3.7.2)
+This API based on [this](https://mvnrepository.com/artifact/org.spongepowered/configurate-yaml/3.7.2) library. 
+There is only convenient configuration builder and wrapper with some utils.
 
 ## Usage
 
