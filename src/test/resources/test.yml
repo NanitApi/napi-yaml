@@ -1,0 +1,13 @@
+name: "Vasya"
+age: 16
+petya:
+  name: "Petya"
+  age: 19
+list:
+  - "Line_1"
+  - "Line_2"
+list_obj:
+  - material: STONE
+    data: 5
+  - material: CAKE
+    data: 8
