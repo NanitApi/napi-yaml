@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
 }
 
@@ -19,7 +19,7 @@ dependencies {
     testImplementation 'org.yaml:snakeyaml:1.18'
     testImplementation 'org.spongepowered:configurate-yaml:3.7.2'
 
-    implementation('org.spongepowered:configurate-yaml:3.7.2'){
+    api('org.spongepowered:configurate-yaml:3.7.2'){
         exclude group: 'org.yaml', module: 'snakeyaml'
         exclude group: 'com.google.inject'
     }
@@ -28,13 +28,13 @@ dependencies {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
     from sourceSets.main.allSource
+    archiveClassifier = 'classifier'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
     from javadoc.destinationDir
+    archiveClassifier = 'javadoc'
 }
 
 artifacts {
