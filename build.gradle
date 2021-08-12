@@ -3,9 +3,6 @@ plugins {
     id 'maven-publish'
 }
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
-
 group 'napi'
 version '1.0'
 
@@ -29,7 +26,7 @@ dependencies {
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
-    archiveClassifier = 'classifier'
+    archiveClassifier = 'sources'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -37,9 +34,14 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier = 'javadoc'
 }
 
-artifacts {
-    archives sourcesJar
-    archives javadocJar
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+        }
+    }
 }
 
 test {
