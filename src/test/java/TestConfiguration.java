@@ -1,5 +1,5 @@
 import napi.configurate.yaml.util.ConfigUtil;
-import napi.configurate.yaml.Configuration;
+import napi.configurate.yaml.conf.Configuration;
 import napi.configurate.yaml.source.ConfigSources;
 import org.junit.jupiter.api.Test;
 

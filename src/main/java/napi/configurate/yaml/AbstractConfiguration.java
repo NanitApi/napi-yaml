@@ -1,6 +1,7 @@
 package napi.configurate.yaml;
 
 import com.google.common.reflect.TypeToken;
+import napi.configurate.yaml.conf.Configuration;
 import napi.configurate.yaml.source.ConfigSource;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ConfigurationOptions;
@@ -9,6 +10,7 @@ import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -21,9 +23,40 @@ public abstract class AbstractConfiguration implements ConfigurationNode {
     protected final YAMLConfigurationLoader loader;
     protected ConfigurationNode root;
 
-    AbstractConfiguration(ConfigSource source, YAMLConfigurationLoader loader) {
+    public AbstractConfiguration(ConfigSource source, YAMLConfigurationLoader loader) {
         this.source = source;
         this.loader = loader;
+    }
+
+    /**
+     * Load config from file
+     * @throws IOException if something wrong while loading
+     */
+    public void reload() throws IOException {
+        root = loader.load();
+    }
+
+    /**
+     * Save config to file
+     * @throws IOException if something wrong while saving
+     */
+    public void save() throws IOException {
+        loader.save(root);
+    }
+
+    /**
+     * Add missing fields from specified configuration file and save result.
+     * @param source Configuration source to merge
+     * @throws IOException if something wrong while loading or saving
+     */
+    public void merge(ConfigSource source) throws IOException {
+        Configuration conf = Configuration.builder()
+                .source(source)
+                .build();
+
+        conf.reload();
+        mergeValuesFrom(conf);
+        save();
     }
 
     /* Delegated methods */

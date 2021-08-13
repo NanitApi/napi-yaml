@@ -1,57 +1,46 @@
-package napi.configurate.yaml;
+package napi.configurate.yaml.lang;
 
-import com.google.common.reflect.TypeToken;
 import napi.configurate.yaml.source.ConfigSource;
 import ninja.leaping.configurate.ConfigurationOptions;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.yaml.snakeyaml.DumperOptions;
 
-public class ConfigurationBuilder {
+public class LanguageBuilder {
 
     private ConfigSource source;
     private ConfigurationOptions options;
     private DumperOptions.FlowStyle flowStyle;
     private int indent;
 
-    public ConfigurationBuilder() {
+    public LanguageBuilder() {
         options(ConfigurationOptions.defaults());
         flowStyle(DumperOptions.FlowStyle.FLOW);
         indent(2);
     }
 
-    public ConfigurationBuilder source(ConfigSource source) {
+    public LanguageBuilder source(ConfigSource source) {
         this.source = source;
         return this;
     }
 
-    public ConfigurationBuilder options(ConfigurationOptions options) {
+    public LanguageBuilder options(ConfigurationOptions options) {
         this.options = options;
         return this;
     }
 
-    public ConfigurationBuilder flowStyle(DumperOptions.FlowStyle flowStyle) {
+    public LanguageBuilder flowStyle(DumperOptions.FlowStyle flowStyle) {
         this.flowStyle = flowStyle;
         return this;
     }
 
-    public ConfigurationBuilder indent(int indent) {
+    public LanguageBuilder indent(int indent) {
         this.indent = indent;
         return this;
     }
 
-    public <T> ConfigurationBuilder serializer(Class<T> type, TypeSerializer<? super T> serializer) {
-        return serializer(TypeToken.of(type), serializer);
-    }
-
-    public <T> ConfigurationBuilder serializer(TypeToken<T> type, TypeSerializer<? super T> serializer) {
-        options.getSerializers().register(type, serializer);
-        return this;
-    }
-
-    public Configuration build() {
+    public Language build() {
         if (source == null)
-            throw new IllegalArgumentException("Missing configuration source");
+            throw new IllegalArgumentException("Missing language source");
 
         YAMLConfigurationLoader loader = YAMLConfigurationLoader.builder()
                 .setSource(source::getReader)
@@ -61,7 +50,7 @@ public class ConfigurationBuilder {
                 .setIndent(indent)
                 .build();
 
-        return new Configuration(source, loader);
+        return new Language(source, loader);
     }
 
 }
