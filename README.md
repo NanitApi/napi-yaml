@@ -18,3 +18,25 @@ dependencies {
     implementation 'com.github.NanitApi:napi-yaml:main-SNAPSHOT'
 }
 ```
+
+```java
+Configuration conf = Configuration.builder()
+        .source(ConfigSources.resource("/test.yml", this)
+            .copyTo("E:\\"))
+        .build();
+
+conf.reload();
+
+String name = conf.getNode("name").getString();
+System.out.println("Name " + name);
+```
+
+```java
+Language lang = Language.builder()
+        .source(ConfigSources.resource("/test.yml", this))
+        .build();
+
+lang.reload();
+        
+System.out.println(lang.of("my.lang.key"));
+```
