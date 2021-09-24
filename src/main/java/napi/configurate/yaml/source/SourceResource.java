@@ -1,6 +1,7 @@
 package napi.configurate.yaml.source;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class SourceResource extends AbstractConfigSource {
 
@@ -18,7 +19,7 @@ public class SourceResource extends AbstractConfigSource {
         InputStream stream = app.getClass().getResourceAsStream(fileName);
         if (stream == null)
             throw new FileNotFoundException("Resource file " + fileName + " not found");
-        return new BufferedReader(new InputStreamReader(stream));
+        return new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
     }
 
     @Override
