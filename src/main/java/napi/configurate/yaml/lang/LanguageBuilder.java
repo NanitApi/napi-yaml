@@ -5,12 +5,15 @@ import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.yaml.snakeyaml.DumperOptions;
 
+import java.util.function.Function;
+
 public class LanguageBuilder {
 
     private ConfigSource source;
     private ConfigurationOptions options;
     private DumperOptions.FlowStyle flowStyle;
     private int indent;
+    private Function<String, String> valueModifier;
 
     public LanguageBuilder() {
         options(ConfigurationOptions.defaults());
@@ -38,6 +41,11 @@ public class LanguageBuilder {
         return this;
     }
 
+    public LanguageBuilder valueModifier(Function<String, String> valueModifier) {
+        this.valueModifier = valueModifier;
+        return this;
+    }
+
     public Language build() {
         if (source == null)
             throw new IllegalArgumentException("Missing language source");
@@ -50,7 +58,7 @@ public class LanguageBuilder {
                 .setIndent(indent)
                 .build();
 
-        return new Language(source, loader);
+        return new Language(source, loader, valueModifier);
     }
 
 }

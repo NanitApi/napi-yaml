@@ -12,16 +12,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Language extends AbstractConfiguration {
 
     private final Map<String, String> keys;
     private final Map<String, List<String>> lists;
+    private final Function<String, String> valueModifier;
 
-    Language(ConfigSource source, YAMLConfigurationLoader loader) {
+    Language(ConfigSource source, YAMLConfigurationLoader loader, Function<String, String> valueModifier) {
         super(source, loader);
         keys = new HashMap<>();
         lists = new HashMap<>();
+        if (valueModifier == null) {
+            this.valueModifier = (s) -> s;
+        } else {
+            this.valueModifier = valueModifier;
+        }
     }
 
     public String of(String key) {
@@ -56,10 +64,12 @@ public class Language extends AbstractConfiguration {
             String key = entry.getKey().toString();
             if (entry.getValue().isList()) {
                 List<String> list = entry.getValue().getList(TypeToken.of(String.class));
-                lists.put(key, list);
+                lists.put(key, list.stream()
+                        .map(valueModifier)
+                        .collect(Collectors.toList()));
             } else {
                 String str = entry.getValue().getString();
-                keys.put(key, str);
+                keys.put(key, valueModifier.apply(str));
             }
         }
     }
