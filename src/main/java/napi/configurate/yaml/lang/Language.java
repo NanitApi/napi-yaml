@@ -42,11 +42,7 @@ public class Language extends AbstractConfiguration {
     }
 
     public String of(String key, Object... args) {
-        return of(key, key, args);
-    }
-
-    public String of(String key, String def, Object... args) {
-        return Placeholders.replace(of(key, def), args);
+        return Placeholders.replace(of(key), args);
     }
 
     public List<String> ofList(String key) {
@@ -58,11 +54,7 @@ public class Language extends AbstractConfiguration {
     }
 
     public List<String> ofList(String key, Object... args) {
-        return ofList(key, Collections.singletonList(key), args);
-    }
-
-    public List<String> ofList(String key, List<String> def, Object... args) {
-        return Placeholders.replace(ofList(key, def), args);
+        return Placeholders.replace(ofList(key), args);
     }
 
     @Override
